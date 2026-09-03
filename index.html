@@ -3,765 +3,204 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Mendebur Studios — Independent Game Studio</title>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Crimson+Pro:wght@300;400;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<title>Mendebur Studios</title>
+<meta name="description" content="Mendebur Studios is a personal hobby project — small, free games built to explore what AI-assisted development can do. Not a company, no commercial activity.">
+<meta name="robots" content="index, follow">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Mendebur Studios">
+<meta property="og:description" content="A personal hobby project. Small, free games built to explore what AI-assisted development can do.">
+<meta property="og:url" content="https://mendeburstudios.com/">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%231a0e05'/%3E%3Ccircle cx='16' cy='16' r='6' fill='%23e8a842'/%3E%3C/svg%3E">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Crimson+Pro:wght@300;400;600&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --ink: #1a0e05;
-    --parchment: #f2e8d5;
-    --warm: #c8924a;
-    --amber: #e8a842;
-    --rust: #8b3a1a;
-    --wood: #5c3317;
-    --cream: #faf6ee;
-    --shadow: rgba(26,14,5,0.15);
-  }
-
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-
-  html { scroll-behavior: smooth; }
-
-  body {
-    background: var(--ink);
-    color: var(--parchment);
-    font-family: 'Crimson Pro', serif;
-    overflow-x: hidden;
-    cursor: none;
-  }
-
-  /* Custom cursor */
-  .cursor {
-    width: 12px; height: 12px;
-    background: var(--amber);
-    border-radius: 50%;
-    position: fixed;
-    pointer-events: none;
-    z-index: 9999;
-    transition: transform 0.15s ease;
-    mix-blend-mode: screen;
-  }
-  .cursor-ring {
-    width: 36px; height: 36px;
-    border: 1.5px solid var(--warm);
-    border-radius: 50%;
-    position: fixed;
-    pointer-events: none;
-    z-index: 9998;
-    transition: all 0.3s ease;
-    mix-blend-mode: screen;
-  }
-
-  /* Noise texture overlay */
-  body::before {
-    content: '';
-    position: fixed;
-    inset: 0;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
-    pointer-events: none;
-    z-index: 1000;
-    opacity: 0.4;
-  }
-
-  /* ── NAV ── */
-  nav {
-    position: fixed; top: 0; left: 0; right: 0;
-    z-index: 100;
-    padding: 24px 48px;
-    display: flex; align-items: center; justify-content: space-between;
-    background: linear-gradient(to bottom, rgba(26,14,5,0.95), transparent);
-  }
-  .nav-logo {
-    font-family: 'Playfair Display', serif;
-    font-size: 18px; font-weight: 700;
-    letter-spacing: 0.05em;
-    color: var(--amber);
-    text-decoration: none;
-  }
-  .nav-logo span { color: var(--parchment); }
-  .nav-links { display: flex; gap: 36px; list-style: none; }
-  .nav-links a {
-    font-family: 'Space Mono', monospace;
-    font-size: 11px; letter-spacing: 0.15em;
-    text-transform: uppercase;
-    color: var(--parchment);
-    text-decoration: none;
-    opacity: 0.6;
-    transition: opacity 0.2s;
-  }
-  .nav-links a:hover { opacity: 1; color: var(--amber); }
-
-  /* ── HERO ── */
-  .hero {
-    min-height: 100vh;
-    display: flex; align-items: center; justify-content: center;
-    position: relative;
-    overflow: hidden;
-    padding: 120px 48px 80px;
-  }
-
-  /* Animated background rings */
-  .hero-rings {
-    position: absolute; inset: 0;
-    display: flex; align-items: center; justify-content: center;
-    pointer-events: none;
-  }
-  .ring {
-    position: absolute;
-    border-radius: 50%;
-    border: 1px solid rgba(200,146,74,0.15);
-    animation: pulse-ring 6s ease-in-out infinite;
-  }
-  .ring:nth-child(1) { width: 300px; height: 300px; animation-delay: 0s; }
-  .ring:nth-child(2) { width: 500px; height: 500px; animation-delay: 1s; border-color: rgba(200,146,74,0.1); }
-  .ring:nth-child(3) { width: 700px; height: 700px; animation-delay: 2s; border-color: rgba(200,146,74,0.07); }
-  .ring:nth-child(4) { width: 900px; height: 900px; animation-delay: 3s; border-color: rgba(200,146,74,0.04); }
-  @keyframes pulse-ring {
-    0%, 100% { transform: scale(1); opacity: 1; }
-    50% { transform: scale(1.05); opacity: 0.6; }
-  }
-
-  /* Floating particles */
-  .particles {
-    position: absolute; inset: 0;
-    pointer-events: none; overflow: hidden;
-  }
-  .particle {
-    position: absolute;
-    width: 2px; height: 2px;
-    background: var(--amber);
-    border-radius: 50%;
-    animation: float-up linear infinite;
-    opacity: 0;
-  }
-  @keyframes float-up {
-    0% { transform: translateY(100vh) translateX(0); opacity: 0; }
-    10% { opacity: 0.6; }
-    90% { opacity: 0.3; }
-    100% { transform: translateY(-100px) translateX(30px); opacity: 0; }
-  }
-
-  .hero-content {
-    text-align: center;
-    position: relative; z-index: 2;
-    animation: fade-in-up 1.2s ease both;
-  }
-  @keyframes fade-in-up {
-    from { opacity: 0; transform: translateY(40px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-
-  .hero-eyebrow {
-    font-family: 'Space Mono', monospace;
-    font-size: 11px; letter-spacing: 0.3em;
-    text-transform: uppercase;
-    color: var(--amber);
-    margin-bottom: 24px;
-    display: block;
-    animation: fade-in-up 1.2s ease 0.2s both;
-  }
-
-  .hero-title {
-    font-family: 'Playfair Display', serif;
-    font-size: clamp(52px, 8vw, 110px);
-    font-weight: 900;
-    line-height: 0.95;
-    letter-spacing: -0.02em;
-    margin-bottom: 32px;
-    animation: fade-in-up 1.2s ease 0.3s both;
-  }
-  .hero-title em {
-    font-style: italic;
-    color: var(--amber);
-    display: block;
-  }
-
-  .hero-sub {
-    font-size: 20px; font-weight: 300;
-    line-height: 1.6;
-    max-width: 480px; margin: 0 auto 48px;
-    color: rgba(242,232,213,0.7);
-    animation: fade-in-up 1.2s ease 0.4s both;
-  }
-
-  .hero-cta {
-    display: inline-flex; gap: 16px;
-    animation: fade-in-up 1.2s ease 0.5s both;
-  }
-  .btn {
-    padding: 14px 32px;
-    font-family: 'Space Mono', monospace;
-    font-size: 12px; letter-spacing: 0.1em;
-    text-transform: uppercase;
-    text-decoration: none;
-    border-radius: 2px;
-    transition: all 0.25s ease;
-    display: inline-block;
-  }
-  .btn-primary {
-    background: var(--amber);
-    color: var(--ink);
-    font-weight: 700;
-  }
-  .btn-primary:hover {
-    background: var(--warm);
-    transform: translateY(-2px);
-    box-shadow: 0 12px 40px rgba(232,168,66,0.3);
-  }
-  .btn-ghost {
-    border: 1px solid rgba(242,232,213,0.3);
-    color: var(--parchment);
-  }
-  .btn-ghost:hover {
-    border-color: var(--amber);
-    color: var(--amber);
-    transform: translateY(-2px);
-  }
-
-  /* Scroll indicator */
-  .scroll-hint {
-    position: absolute; bottom: 40px; left: 50%;
-    transform: translateX(-50%);
-    display: flex; flex-direction: column; align-items: center; gap: 8px;
-    font-family: 'Space Mono', monospace;
-    font-size: 9px; letter-spacing: 0.2em;
-    color: rgba(242,232,213,0.3);
-    animation: fade-in-up 1.2s ease 1s both;
-  }
-  .scroll-line {
-    width: 1px; height: 40px;
-    background: linear-gradient(to bottom, var(--amber), transparent);
-    animation: scroll-pulse 2s ease-in-out infinite;
-  }
-  @keyframes scroll-pulse {
-    0%, 100% { opacity: 0.3; transform: scaleY(1); }
-    50% { opacity: 1; transform: scaleY(0.7); }
-  }
-
-  /* ── DIVIDER ── */
-  .ornament {
-    text-align: center; padding: 24px;
-    color: var(--warm); font-size: 20px; opacity: 0.4;
-    letter-spacing: 12px;
-  }
-
-  /* ── SECTION BASE ── */
-  section { padding: 100px 48px; }
-
-  .section-label {
-    font-family: 'Space Mono', monospace;
-    font-size: 10px; letter-spacing: 0.3em;
-    text-transform: uppercase;
-    color: var(--amber); opacity: 0.7;
-    margin-bottom: 16px;
-    display: block;
-  }
-  .section-title {
-    font-family: 'Playfair Display', serif;
-    font-size: clamp(36px, 5vw, 64px);
-    font-weight: 700; line-height: 1.1;
-    margin-bottom: 24px;
-  }
-
-  /* ── ABOUT ── */
-  .about {
-    max-width: 1200px; margin: 0 auto;
-    display: grid; grid-template-columns: 1fr 1fr;
-    gap: 80px; align-items: center;
-  }
-  .about-text p {
-    font-size: 18px; line-height: 1.8;
-    color: rgba(242,232,213,0.75);
-    margin-bottom: 20px;
-  }
-  .about-text p strong { color: var(--amber); font-weight: 600; }
-
-  .about-stats {
-    display: grid; grid-template-columns: 1fr 1fr;
-    gap: 2px;
-  }
-  .stat-box {
-    background: rgba(200,146,74,0.06);
-    border: 1px solid rgba(200,146,74,0.12);
-    padding: 32px 24px;
-    transition: background 0.3s;
-  }
-  .stat-box:hover { background: rgba(200,146,74,0.1); }
-  .stat-num {
-    font-family: 'Playfair Display', serif;
-    font-size: 52px; font-weight: 900;
-    color: var(--amber); line-height: 1;
-    margin-bottom: 8px;
-  }
-  .stat-label {
-    font-family: 'Space Mono', monospace;
-    font-size: 10px; letter-spacing: 0.15em;
-    text-transform: uppercase;
-    color: rgba(242,232,213,0.4);
-  }
-
-  /* ── GAMES ── */
-  .games-section { background: rgba(255,255,255,0.02); }
-  .games-inner { max-width: 1200px; margin: 0 auto; }
-
-  .games-grid {
-    display: grid; grid-template-columns: 1fr 1fr;
-    gap: 2px; margin-top: 60px;
-  }
-
-  .game-card {
-    position: relative; overflow: hidden;
-    background: rgba(200,146,74,0.05);
-    border: 1px solid rgba(200,146,74,0.1);
-    padding: 48px;
-    transition: all 0.4s ease;
-    text-decoration: none; color: inherit;
-    display: block;
-  }
-  .game-card:hover {
-    background: rgba(200,146,74,0.1);
-    border-color: rgba(200,146,74,0.3);
-    transform: translateY(-4px);
-  }
-  .game-card::before {
-    content: '';
-    position: absolute; top: 0; left: 0; right: 0;
-    height: 2px;
-    background: linear-gradient(to right, transparent, var(--amber), transparent);
-    opacity: 0;
-    transition: opacity 0.3s;
-  }
-  .game-card:hover::before { opacity: 1; }
-
-  .game-icon {
-    font-size: 56px; margin-bottom: 24px;
-    display: block;
-    filter: drop-shadow(0 4px 16px rgba(232,168,66,0.4));
-  }
-  .game-status {
-    font-family: 'Space Mono', monospace;
-    font-size: 9px; letter-spacing: 0.2em;
-    text-transform: uppercase;
-    padding: 4px 10px;
-    border-radius: 1px;
-    display: inline-block;
-    margin-bottom: 16px;
-  }
-  .status-live { background: rgba(72,199,142,0.15); color: #48c78e; border: 1px solid rgba(72,199,142,0.3); }
-  .status-soon { background: rgba(232,168,66,0.15); color: var(--amber); border: 1px solid rgba(232,168,66,0.3); }
-  .status-dev { background: rgba(242,232,213,0.08); color: rgba(242,232,213,0.5); border: 1px solid rgba(242,232,213,0.15); }
-
-  .game-name {
-    font-family: 'Playfair Display', serif;
-    font-size: 28px; font-weight: 700;
-    margin-bottom: 12px;
-  }
-  .game-desc {
-    font-size: 16px; line-height: 1.6;
-    color: rgba(242,232,213,0.6);
-    margin-bottom: 24px;
-  }
-  .game-platforms {
-    display: flex; gap: 8px;
-    font-family: 'Space Mono', monospace;
-    font-size: 9px; letter-spacing: 0.1em;
-    text-transform: uppercase;
-  }
-  .platform-tag {
-    padding: 3px 8px;
-    border: 1px solid rgba(200,146,74,0.2);
-    color: rgba(242,232,213,0.4);
-    border-radius: 1px;
-  }
-
-  .game-card-coming {
-    opacity: 0.5;
-    background: repeating-linear-gradient(
-      45deg,
-      transparent,
-      transparent 10px,
-      rgba(200,146,74,0.02) 10px,
-      rgba(200,146,74,0.02) 20px
-    );
-  }
-
-  /* ── PHILOSOPHY ── */
-  .philosophy { max-width: 800px; margin: 0 auto; text-align: center; }
-  .philosophy-quote {
-    font-family: 'Playfair Display', serif;
-    font-size: clamp(24px, 4vw, 42px);
-    font-style: italic;
-    line-height: 1.4;
-    color: var(--parchment);
-    margin-bottom: 32px;
-    position: relative;
-  }
-  .philosophy-quote::before {
-    content: '"';
-    font-size: 120px; line-height: 0;
-    color: var(--amber); opacity: 0.2;
-    position: absolute; top: 40px; left: -20px;
-    font-family: 'Playfair Display', serif;
-  }
-  .philosophy-attr {
-    font-family: 'Space Mono', monospace;
-    font-size: 11px; letter-spacing: 0.2em;
-    color: var(--amber); opacity: 0.6;
-    text-transform: uppercase;
-  }
-
-  /* ── CONTACT ── */
-  .contact-inner {
-    max-width: 1200px; margin: 0 auto;
-    display: grid; grid-template-columns: 1fr 1fr;
-    gap: 80px; align-items: start;
-  }
-  .contact-links { display: flex; flex-direction: column; gap: 2px; margin-top: 40px; }
-  .contact-link {
-    display: flex; align-items: center; gap: 16px;
-    padding: 20px 24px;
-    border: 1px solid rgba(200,146,74,0.1);
-    text-decoration: none; color: inherit;
-    transition: all 0.25s;
-    background: rgba(200,146,74,0.03);
-  }
-  .contact-link:hover {
-    background: rgba(200,146,74,0.08);
-    border-color: rgba(200,146,74,0.25);
-    transform: translateX(4px);
-  }
-  .contact-link-icon { font-size: 20px; width: 32px; text-align: center; }
-  .contact-link-text { flex: 1; }
-  .contact-link-label {
-    font-family: 'Space Mono', monospace;
-    font-size: 9px; letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: var(--amber); opacity: 0.6;
-    margin-bottom: 2px;
-  }
-  .contact-link-value { font-size: 16px; color: var(--parchment); }
-  .contact-link-arrow { color: var(--amber); opacity: 0.4; font-size: 18px; }
-  .contact-link:hover .contact-link-arrow { opacity: 1; }
-
-  .contact-form-area p {
-    font-size: 18px; line-height: 1.8;
-    color: rgba(242,232,213,0.65);
-    margin-bottom: 32px;
-  }
-  .location-box {
-    border: 1px solid rgba(200,146,74,0.15);
-    padding: 32px;
-    background: rgba(200,146,74,0.04);
-  }
-  .location-box .loc-title {
-    font-family: 'Playfair Display', serif;
-    font-size: 22px; margin-bottom: 8px;
-  }
-  .location-box .loc-sub {
-    font-family: 'Space Mono', monospace;
-    font-size: 10px; letter-spacing: 0.15em;
-    text-transform: uppercase;
-    color: var(--amber); opacity: 0.5;
-  }
-
-  /* ── FOOTER ── */
-  footer {
-    border-top: 1px solid rgba(200,146,74,0.1);
-    padding: 40px 48px;
-    display: flex; align-items: center; justify-content: space-between;
-  }
-  .footer-logo {
-    font-family: 'Playfair Display', serif;
-    font-size: 20px; font-weight: 700;
-    color: var(--amber);
-  }
-  .footer-copy {
-    font-family: 'Space Mono', monospace;
-    font-size: 10px; letter-spacing: 0.1em;
-    color: rgba(242,232,213,0.25);
-  }
-  .footer-links { display: flex; gap: 24px; }
-  .footer-links a {
-    font-family: 'Space Mono', monospace;
-    font-size: 10px; letter-spacing: 0.1em;
-    color: rgba(242,232,213,0.3);
-    text-decoration: none;
-    transition: color 0.2s;
-  }
-  .footer-links a:hover { color: var(--amber); }
-
-  /* ── SCROLL ANIMATIONS ── */
-  .reveal {
-    opacity: 0; transform: translateY(30px);
-    transition: opacity 0.8s ease, transform 0.8s ease;
-  }
-  .reveal.visible { opacity: 1; transform: translateY(0); }
-  .reveal-delay-1 { transition-delay: 0.1s; }
-  .reveal-delay-2 { transition-delay: 0.2s; }
-  .reveal-delay-3 { transition-delay: 0.3s; }
-
-  /* ── RESPONSIVE ── */
-  @media (max-width: 768px) {
-    nav { padding: 20px 24px; }
-    .nav-links { display: none; }
-    section { padding: 70px 24px; }
-    .about, .contact-inner { grid-template-columns: 1fr; gap: 40px; }
-    .games-grid { grid-template-columns: 1fr; }
-    footer { flex-direction: column; gap: 20px; text-align: center; }
-    .hero { padding: 100px 24px 60px; }
-  }
+  :root{
+    --ink:#1a0e05;
+    --parchment:#f2e8d5;
+    --warm:#c8924a;
+    --amber:#e8a842;
+    --muted:rgba(242,232,213,.62);
+    --line:rgba(200,146,74,.28);
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    background:var(--ink);
+    color:var(--parchment);
+    font-family:'Crimson Pro',Georgia,'Times New Roman',serif;
+    font-weight:300;
+    line-height:1.75;
+    font-size:19px;
+    min-height:100vh;
+    display:flex;
+    flex-direction:column;
+    padding:clamp(28px,6vw,72px) clamp(20px,6vw,40px);
+  }
+  body::before{
+    content:'';
+    position:fixed;
+    inset:0;
+    background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.045'/%3E%3C/svg%3E");
+    pointer-events:none;
+    z-index:1;
+  }
+  .wrap{
+    position:relative;
+    z-index:2;
+    width:100%;
+    max-width:640px;
+    margin:auto;
+  }
+  header{
+    display:flex;
+    align-items:baseline;
+    justify-content:space-between;
+    gap:20px;
+    flex-wrap:wrap;
+    padding-bottom:22px;
+    border-bottom:1px solid var(--line);
+  }
+  h1{
+    font-family:'Playfair Display',Georgia,serif;
+    font-weight:400;
+    font-size:clamp(28px,6vw,40px);
+    letter-spacing:.01em;
+    color:var(--parchment);
+  }
+  .kicker{
+    display:block;
+    font-size:12px;
+    letter-spacing:.22em;
+    text-transform:uppercase;
+    color:var(--warm);
+    margin-bottom:10px;
+    font-weight:600;
+  }
+  .langs{display:flex;gap:6px}
+  .langs button{
+    font:inherit;
+    font-size:13px;
+    letter-spacing:.12em;
+    text-transform:uppercase;
+    background:none;
+    border:1px solid var(--line);
+    color:var(--muted);
+    padding:5px 12px;
+    border-radius:999px;
+    cursor:pointer;
+    transition:color .2s,border-color .2s,background .2s;
+  }
+  .langs button:hover{color:var(--parchment);border-color:var(--warm)}
+  .langs button[aria-pressed="true"]{
+    color:var(--ink);
+    background:var(--amber);
+    border-color:var(--amber);
+  }
+  main{padding:34px 0 0}
+  .lead{
+    font-family:'Playfair Display',Georgia,serif;
+    font-size:clamp(21px,3.4vw,26px);
+    line-height:1.5;
+    color:var(--parchment);
+    margin-bottom:28px;
+  }
+  p{margin-bottom:20px;color:rgba(242,232,213,.86)}
+  p strong{font-weight:600;color:var(--parchment)}
+  .note{
+    margin-top:34px;
+    padding:18px 20px;
+    border-left:2px solid var(--warm);
+    background:rgba(200,146,74,.06);
+    font-size:17px;
+    color:var(--muted);
+  }
+  footer{
+    position:relative;
+    z-index:2;
+    width:100%;
+    max-width:640px;
+    margin:0 auto;
+    padding-top:26px;
+    border-top:1px solid var(--line);
+    font-size:13px;
+    letter-spacing:.06em;
+    color:rgba(242,232,213,.45);
+    display:flex;
+    justify-content:space-between;
+    gap:12px;
+    flex-wrap:wrap;
+  }
+  [data-lang]{display:none}
+  [data-lang].on{display:block}
+  footer [data-lang].on{display:inline}
 </style>
 </head>
 <body>
 
-<div class="cursor" id="cursor"></div>
-<div class="cursor-ring" id="cursorRing"></div>
-
-<!-- NAV -->
-<nav>
-  <a href="#" class="nav-logo">Mendebur<span> Studios</span></a>
-  <ul class="nav-links">
-    <li><a href="#about">About</a></li>
-    <li><a href="#games">Games</a></li>
-    <li><a href="#philosophy">Philosophy</a></li>
-    <li><a href="#contact">Contact</a></li>
-  </ul>
-</nav>
-
-<!-- HERO -->
-<section class="hero" id="home">
-  <div class="hero-rings">
-    <div class="ring"></div>
-    <div class="ring"></div>
-    <div class="ring"></div>
-    <div class="ring"></div>
-  </div>
-  <div class="particles" id="particles"></div>
-
-  <div class="hero-content">
-    <span class="hero-eyebrow">✦ Independent Game Studio ✦</span>
-    <h1 class="hero-title">
-      Crafting games<br>
-      <em>worth remembering</em>
-    </h1>
-    <p class="hero-sub">
-      We build small, focused games with soul — experiences that linger long after the screen goes dark.
-    </p>
-    <div class="hero-cta">
-      <a href="#games" class="btn btn-primary">Our Games</a>
-      <a href="#contact" class="btn btn-ghost">Get in Touch</a>
-    </div>
-  </div>
-
-  <div class="scroll-hint">
-    <div class="scroll-line"></div>
-    <span>Scroll</span>
-  </div>
-</section>
-
-<!-- ABOUT -->
-<section id="about">
-  <div class="about">
-    <div class="about-text reveal">
-      <span class="section-label">// About the Studio</span>
-      <h2 class="section-title">Small team.<br>Big intentions.</h2>
-      <p>Mendebur Studios is an <strong>independent game studio</strong> based in Istanbul, Turkey. We believe the best games are intimate — crafted with intention, not manufactured at scale.</p>
-      <p>Every title we make starts with a single question: <strong>does this respect the player's time?</strong> We make games for busy people who still crave a moment of focus.</p>
-      <p>Founded in 2026, we're just getting started.</p>
-    </div>
-    <div class="about-stats reveal reveal-delay-2">
-      <div class="stat-box">
-        <div class="stat-num">1</div>
-        <div class="stat-label">Games Live</div>
-      </div>
-      <div class="stat-box">
-        <div class="stat-num">∞</div>
-        <div class="stat-label">In the Pipeline</div>
-      </div>
-      <div class="stat-box">
-        <div class="stat-num">IST</div>
-        <div class="stat-label">Istanbul, Turkey</div>
-      </div>
-      <div class="stat-box">
-        <div class="stat-num">26'</div>
-        <div class="stat-label">Est. 2026</div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<div class="ornament">✦ ✦ ✦</div>
-
-<!-- GAMES -->
-<section class="games-section" id="games">
-  <div class="games-inner">
-    <span class="section-label reveal">// Our Games</span>
-    <h2 class="section-title reveal">What we've<br>been building.</h2>
-
-    <div class="games-grid">
-      <!-- MindSharp -->
-      <a href="https://mindsharp.co" target="_blank" class="game-card reveal">
-        <span class="game-icon">🧠</span>
-        <span class="game-status status-live">● Live Now</span>
-        <h3 class="game-name">MindSharp</h3>
-        <p class="game-desc">A memory & focus game built for the daily grind. Flip tiles, find matching pairs, beat your own score. Beautifully minimal, endlessly replayable.</p>
-        <div class="game-platforms">
-          <span class="platform-tag">iOS PWA</span>
-          <span class="platform-tag">Android</span>
-          <span class="platform-tag">Web</span>
-        </div>
-      </a>
-
-      <!-- Coming Soon 1 -->
-      <div class="game-card game-card-coming reveal reveal-delay-1">
-        <span class="game-icon">🎲</span>
-        <span class="game-status status-soon">◌ Coming Soon</span>
-        <h3 class="game-name">Untitled #2</h3>
-        <p class="game-desc">Something new is brewing in the studio. Sign up to be the first to know when we're ready to share.</p>
-        <div class="game-platforms">
-          <span class="platform-tag">TBA</span>
-        </div>
-      </div>
-
-      <!-- Coming Soon 2 -->
-      <div class="game-card game-card-coming reveal reveal-delay-2">
-        <span class="game-icon">♟️</span>
-        <span class="game-status status-dev">◌ In Development</span>
-        <h3 class="game-name">Untitled #3</h3>
-        <p class="game-desc">We like strategy. We like elegance. We're combining both into something unexpected.</p>
-        <div class="game-platforms">
-          <span class="platform-tag">TBA</span>
-        </div>
-      </div>
-
-      <!-- Coming Soon 3 -->
-      <div class="game-card game-card-coming reveal reveal-delay-3">
-        <span class="game-icon">🌙</span>
-        <span class="game-status status-dev">◌ Concept Phase</span>
-        <h3 class="game-name">Untitled #4</h3>
-        <p class="game-desc">A late night game for insomniacs. That's all we'll say for now.</p>
-        <div class="game-platforms">
-          <span class="platform-tag">TBA</span>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<div class="ornament">✦ ✦ ✦</div>
-
-<!-- PHILOSOPHY -->
-<section id="philosophy">
-  <div class="philosophy reveal">
-    <span class="section-label">// Our Philosophy</span>
-    <blockquote class="philosophy-quote">
-      Games are the only art form where the audience becomes the author.
-    </blockquote>
-    <p class="philosophy-attr">— Mendebur Studios Design Principle</p>
-  </div>
-</section>
-
-<!-- CONTACT -->
-<section id="contact" style="background: rgba(255,255,255,0.015);">
-  <div class="contact-inner">
+<div class="wrap">
+  <header>
     <div>
-      <span class="section-label reveal">// Contact</span>
-      <h2 class="section-title reveal">Let's talk<br>games.</h2>
-      <div class="contact-links">
-        <a href="mailto:info@mindsharp.co" class="contact-link reveal">
-          <span class="contact-link-icon">✉️</span>
-          <div class="contact-link-text">
-            <div class="contact-link-label">Email</div>
-            <div class="contact-link-value">info@mindsharp.co</div>
-          </div>
-          <span class="contact-link-arrow">→</span>
-        </a>
-        <a href="https://mindsharp.co" target="_blank" class="contact-link reveal reveal-delay-1">
-          <span class="contact-link-icon">🎮</span>
-          <div class="contact-link-text">
-            <div class="contact-link-label">Latest Game</div>
-            <div class="contact-link-value">mindsharp.co</div>
-          </div>
-          <span class="contact-link-arrow">→</span>
-        </a>
-        <a href="https://instagram.com/mindsharpmobile" target="_blank" class="contact-link reveal reveal-delay-2">
-          <span class="contact-link-icon">📱</span>
-          <div class="contact-link-text">
-            <div class="contact-link-label">Instagram</div>
-            <div class="contact-link-value">@mindsharpmobile</div>
-          </div>
-          <span class="contact-link-arrow">→</span>
-        </a>
-      </div>
+      <span class="kicker">Est. 2026 · Istanbul</span>
+      <h1>Mendebur Studios</h1>
     </div>
-    <div class="contact-form-area reveal reveal-delay-1">
-      <p>We're always open to talking about games, ideas, collaborations, or just a good conversation about design.</p>
-      <p>Whether you're a player with feedback, a developer with ideas, or a publisher looking for something different — we'd love to hear from you.</p>
-      <div class="location-box">
-        <div class="loc-title">🇹🇷 Istanbul</div>
-        <div class="loc-sub">Turkey · UTC+3 · Est. 2026</div>
-      </div>
+    <div class="langs">
+      <button id="btn-en" aria-pressed="true" onclick="setLang('en')">EN</button>
+      <button id="btn-tr" aria-pressed="false" onclick="setLang('tr')">TR</button>
     </div>
-  </div>
-</section>
+  </header>
 
-<!-- FOOTER -->
+  <main>
+    <section data-lang="en" class="on">
+      <p class="lead">Mendebur Studios is a personal hobby project — not a company.</p>
+
+      <p>It is simply the name used for something done in spare time: building small games in order to understand, hands-on, what today's artificial intelligence tools can and cannot do. The interest is in the craft and in the limits of the technology, not in the market.</p>
+
+      <p><strong>There is no commercial purpose here.</strong> Nothing is sold, no service is offered, and there is no revenue model. The games are free to download and play, contain no in-app purchases and, as of today, display no advertising.</p>
+
+      <p>One game has been published so far: <strong>MindSharp</strong>, a small memory game for phones and browsers. It exists because building it was the best way to learn — and it stays free for the same reason.</p>
+
+      <p>Everything here is made outside working hours, with personal means, out of curiosity. That is the whole of it.</p>
+
+      <div class="note">Mendebur Studios has no employees, no clients and no commercial relationship with any company or institution.</div>
+    </section>
+
+    <section data-lang="tr">
+      <p class="lead">Mendebur Studios tamamen kişisel bir hobi projesidir — bir şirket değildir.</p>
+
+      <p>Boş zamanlarda yapılan bir işe verilmiş isimden ibarettir: küçük oyunlar geliştirerek, bugünün yapay zekâ araçlarının nasıl çalıştığını ve sınırlarının nerede bittiğini bizzat deneyerek öğrenmek. Buradaki ilgi işin kendisine ve teknolojinin sınırlarına yöneliktir; pazara değil.</p>
+
+      <p><strong>Hiçbir ticari amacı yoktur.</strong> Hiçbir şey satılmaz, hiçbir hizmet sunulmaz, herhangi bir gelir modeli bulunmaz. Oyunlar ücretsiz indirilir ve oynanır; uygulama içi satın alma içermez, bugün itibarıyla reklam göstermez.</p>
+
+      <p>Bugüne kadar tek bir oyun yayımlandı: <strong>MindSharp</strong>, telefon ve tarayıcı için küçük bir hafıza oyunu. Var olma sebebi, öğrenmenin en iyi yolunun bir şeyi gerçekten yapmak olmasıdır — ücretsiz kalma sebebi de aynıdır.</p>
+
+      <p>Buradaki her şey mesai dışında, kişisel imkânlarla ve yalnızca merak sebebiyle üretilmiştir. Hepsi bundan ibarettir.</p>
+
+      <div class="note">Mendebur Studios'un çalışanı, müşterisi ya da herhangi bir şirket veya kurumla ticari ilişkisi yoktur.</div>
+    </section>
+  </main>
+</div>
+
 <footer>
-  <div class="footer-logo">Mendebur Studios</div>
-  <div class="footer-copy">© 2026 Mendebur Studios. All rights reserved.</div>
-  <div class="footer-links">
-    <a href="https://mindsharp.co/privacy.html">Privacy</a>
-    <a href="https://mindsharp.co/terms.html">Terms</a>
-    <a href="mailto:info@mindsharp.co">Contact</a>
-  </div>
+  <span>© 2026 Mendebur Studios</span>
+  <span data-lang="en" class="on">A hobby project · Istanbul</span>
+  <span data-lang="tr">Bir hobi projesi · İstanbul</span>
 </footer>
 
 <script>
-// Custom cursor
-const cursor = document.getElementById('cursor');
-const ring = document.getElementById('cursorRing');
-let mouseX = 0, mouseY = 0;
-let ringX = 0, ringY = 0;
-
-document.addEventListener('mousemove', e => {
-  mouseX = e.clientX; mouseY = e.clientY;
-  cursor.style.left = mouseX - 6 + 'px';
-  cursor.style.top = mouseY - 6 + 'px';
-});
-
-function animateRing() {
-  ringX += (mouseX - ringX - 18) * 0.12;
-  ringY += (mouseY - ringY - 18) * 0.12;
-  ring.style.left = ringX + 'px';
-  ring.style.top = ringY + 'px';
-  requestAnimationFrame(animateRing);
-}
-animateRing();
-
-document.querySelectorAll('a, button').forEach(el => {
-  el.addEventListener('mouseenter', () => cursor.style.transform = 'scale(2.5)');
-  el.addEventListener('mouseleave', () => cursor.style.transform = 'scale(1)');
-});
-
-// Particles
-const particlesEl = document.getElementById('particles');
-for (let i = 0; i < 20; i++) {
-  const p = document.createElement('div');
-  p.className = 'particle';
-  p.style.left = Math.random() * 100 + '%';
-  p.style.animationDuration = (8 + Math.random() * 12) + 's';
-  p.style.animationDelay = (Math.random() * 10) + 's';
-  p.style.width = p.style.height = (1 + Math.random() * 2) + 'px';
-  particlesEl.appendChild(p);
-}
-
-// Scroll reveal
-const observer = new IntersectionObserver(entries => {
-  entries.forEach(e => {
-    if (e.isIntersecting) { e.target.classList.add('visible'); }
-  });
-}, { threshold: 0.1 });
-
-document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+  function setLang(l){
+    document.documentElement.lang = l;
+    document.querySelectorAll('[data-lang]').forEach(function(el){
+      el.classList.toggle('on', el.getAttribute('data-lang') === l);
+    });
+    document.getElementById('btn-en').setAttribute('aria-pressed', String(l === 'en'));
+    document.getElementById('btn-tr').setAttribute('aria-pressed', String(l === 'tr'));
+    try { localStorage.setItem('ms_lang', l); } catch (e) {}
+  }
+  (function(){
+    var saved = null;
+    try { saved = localStorage.getItem('ms_lang'); } catch (e) {}
+    var nav = (navigator.language || 'en').toLowerCase();
+    setLang(saved || (nav.indexOf('tr') === 0 ? 'tr' : 'en'));
+  })();
 </script>
 
 </body>
