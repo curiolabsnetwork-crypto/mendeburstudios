@@ -1,7 +1,7 @@
 {
-  "name": "Ormanda Saklambaç",
-  "short_name": "Saklambaç",
-  "description": "Ormanda Türk usulü saklambaç. Arkadaşlarınla aynı ormanda, kendi cihazından oyna.",
+  "name": "Sobe!",
+  "short_name": "Sobe",
+  "description": "Sobe! Türk usulü saklambaç. Arkadaşlarınla aynı ormanda, kendi cihazından oyna.",
   "lang": "tr",
   "start_url": "./",
   "scope": "./",
