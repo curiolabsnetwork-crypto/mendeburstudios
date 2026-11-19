@@ -1,6 +1,6 @@
 // Ormanda Saklambaç service worker: oyun dosyaları ilk açılışta önbelleğe girer, sonra hızlı ve çevrimdışı açılır.
 // Sayfa (index.html) önce ağdan denenir ki yeni sürüm hemen gelsin; varlıklar (adları sürüme göre değişir) önbellekten.
-const SURUM = 'sk-v5-20261119';
+const SURUM = 'sk-v6-20261119';
 self.addEventListener('install', e => { self.skipWaiting(); e.waitUntil(caches.open(SURUM).then(c => c.addAll(['./', './manifest.webmanifest', './ikon/ikon-192.png']).catch(() => {}))); });
 self.addEventListener('activate', e => { e.waitUntil(caches.keys().then(k => Promise.all(k.filter(x => x !== SURUM).map(x => caches.delete(x)))).then(() => self.clients.claim())); });
 self.addEventListener('fetch', e => {
