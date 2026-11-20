@@ -55,7 +55,7 @@ const DB = 'https://mindsharp-af404-default-rtdb.europe-west1.firebasedatabase.a
 const ADLAR = { ozgur: 'Özgür', deniz: 'Deniz', nil: 'Nil', leyla: 'Leyla', kerem: 'Kerem', zeynep: 'Zeynep', ayse: 'Ayşe', can: 'Can', mert: 'Mert', ali: 'Ali', elif: 'Elif', emre: 'Emre' };
 const $ = id => document.getElementById(id);
 const n = v => (v || 0).toLocaleString('tr-TR');
-const top = (o, ...k) => k.reduce((s, x) => s + (o[x] || 0), 0);
+const topla = (o, ...k) => k.reduce((s, x) => s + (o[x] || 0), 0);
 async function yukle() {
   let t = null; try { t = JSON.parse(localStorage.getItem('panelOturum')); } catch (e) {}
   if (!t || Date.now() - t.z > 50 * 60e3) { // anonim oturum 50 dk boyunca yeniden kullanılır
@@ -68,14 +68,14 @@ async function yukle() {
 }
 function ciz(v) {
   const T = v.toplam || {}, G = v.gunluk || {};
-  const sobe = top(T, 'tek_sobe', 'online_sobe'), mantar = top(T, 'tek_mantar', 'online_mantar');
+  const sobe = topla(T, 'tek_sobe', 'online_sobe'), mantar = topla(T, 'tek_mantar', 'online_mantar');
   const gunler = Object.keys(G).sort();
   const bugun = new Date(); const gunAd = d => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
   const b = G[gunAd(bugun)] || {};
   let son7 = 0; for (let i = 0; i < 7; i++) { const d = new Date(bugun); d.setDate(d.getDate() - i); son7 += (G[gunAd(d)] || {}).oyun || 0; }
   $('kutular').innerHTML = [
     [n(T.oyun), 'Toplam oyun'], [n(T.acilis), 'Uygulama açılışı'], [n(b.oyun), 'Bugün oyun'], [n(son7), 'Son 7 gün oyun'],
-    [n(top(T, 'tur_sobe', 'tur_mantar')), 'Oynanan tur'], [n(top(T, 'online_sobe', 'online_mantar')), 'Arkadaşlarla oyun'],
+    [n(topla(T, 'tur_sobe', 'tur_mantar')), 'Oynanan tur'], [n(topla(T, 'online_sobe', 'online_mantar')), 'Arkadaşlarla oyun'],
   ].map(([s, e]) => `<div class="kutu"><b>${s}</b><span>${e}</span></div>`).join('');
   const satirlar = [
     ['Saklambaç', sobe, '#7fcf4f', `${n(T.tek_sobe)} tek · ${n(T.online_sobe)} online · ${n(T.tur_sobe)} tur`],
@@ -84,7 +84,7 @@ function ciz(v) {
   const mx = Math.max(1, sobe, mantar), tp = Math.max(1, sobe + mantar);
   $('modlar').innerHTML = satirlar.map(([a, s, r, d]) => `<div class="cubuk"><span>${a}</span><i style="width:${s / mx * 100}%;background:${r}"></i><em>%${Math.round(s / tp * 100)}</em></div><div class="alt" style="margin:-4px 0 8px 130px">${d}</div>`).join('');
   // 30 günlük grafik
-  const g30 = []; for (let i = 29; i >= 0; i--) { const d = new Date(bugun); d.setDate(d.getDate() - i); const x = G[gunAd(d)] || {}; g30.push({ d, s: top(x, 'tek_sobe', 'online_sobe'), m: top(x, 'tek_mantar', 'online_mantar') }); }
+  const g30 = []; for (let i = 29; i >= 0; i--) { const d = new Date(bugun); d.setDate(d.getDate() - i); const x = G[gunAd(d)] || {}; g30.push({ d, s: topla(x, 'tek_sobe', 'online_sobe'), m: topla(x, 'tek_mantar', 'online_mantar') }); }
   const W = 900, H = 200, P = 26, gm = Math.max(1, ...g30.map(x => x.s + x.m)), bw = (W - P) / 30;
   let svg = `<svg viewBox="0 0 ${W} ${H + 20}" width="100%">`;
   g30.forEach((x, i) => { const hs = x.s / gm * H, hm = x.m / gm * H, X = P + i * bw + 2;
@@ -97,7 +97,7 @@ function ciz(v) {
   const cm = Math.max(1, ...ck.map(x => x[1]));
   $('cocuklar').innerHTML = ck.length ? ck.map(([a, s]) => `<div class="cubuk"><span>${a}</span><i style="width:${s / cm * 100}%;background:#ffd84a"></i><em>${n(s)}</em></div>`).join('') : '<div class="alt">Henüz veri yok</div>';
   $('tablo').innerHTML = '<tr><th>Gün</th><th>Açılış</th><th>Oyun</th><th>Saklambaç</th><th>Mantar</th><th>Online</th><th>Tur</th></tr>' +
-    gunler.slice(-30).reverse().map(g => { const x = G[g]; return `<tr><td>${g.split('-').reverse().join('.')}</td><td>${n(x.acilis)}</td><td>${n(x.oyun)}</td><td>${n(top(x, 'tek_sobe', 'online_sobe'))}</td><td>${n(top(x, 'tek_mantar', 'online_mantar'))}</td><td>${n(top(x, 'online_sobe', 'online_mantar'))}</td><td>${n(top(x, 'tur_sobe', 'tur_mantar'))}</td></tr>`; }).join('');
+    gunler.slice(-30).reverse().map(g => { const x = G[g]; return `<tr><td>${g.split('-').reverse().join('.')}</td><td>${n(x.acilis)}</td><td>${n(x.oyun)}</td><td>${n(topla(x, 'tek_sobe', 'online_sobe'))}</td><td>${n(topla(x, 'tek_mantar', 'online_mantar'))}</td><td>${n(topla(x, 'online_sobe', 'online_mantar'))}</td><td>${n(topla(x, 'tur_sobe', 'tur_mantar'))}</td></tr>`; }).join('');
   $('zaman').textContent = 'Güncellendi: ' + new Date().toLocaleString('tr-TR');
   $('durum').hidden = true; $('icerik').hidden = false;
 }
