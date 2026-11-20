@@ -9,7 +9,8 @@ th{background:#f4e3c6}a{color:#2f6fb5}nav{margin-bottom:18px;font-size:14px}.kut
 <li>No accounts. We don’t ask for your email, phone, address, location, photos, camera or microphone.</li>
 <li>No ad networks, no tracking across apps, we never sell your information.</li>
 <li>Your settings and chosen character stay on this device.</li>
-<li>When playing with friends, only your character and nickname are shown to that room; they are deleted when the room closes.</li>
+<li>When playing with others, only your character and nickname are shown to that room; they are deleted when the room closes.</li>
+<li>On the leaderboards your nickname, a 3-digit tag and your score are visible to everyone; you can turn this off in Settings.</li>
 <li>There is no voice or text chat.</li></ul></div>
 
 <h2>1. Who we are (controller)</h2>
@@ -23,8 +24,9 @@ th{background:#f4e3c6}a{color:#2f6fb5}nav{margin-bottom:18px;font-size:14px}.kut
 
 <h2>4. What goes online</h2>
 <p><b>a) Anonymous counts.</b> To improve the game we count events such as “game opened”, “round played”, “game mode” and “character chosen” as daily and total numbers only. No person, device, IP address or persistent ID is attached; they are totals that cannot be linked to anyone. To connect to Firebase, a temporary random session code is created on each launch; it is not stored and a new one is created next time.</p>
-<p><b>b) Playing with friends (rooms).</b> When you create or join a room, the room code, your character, nickname, in-game position, moves and score are written in real time so the game can run, and are shown only to players in that room. Your entry is deleted when you leave; the whole room is deleted when the host leaves. Rooms left open by a lost connection are removed by the game’s automatic clean-up (rooms older than 6 hours).</p>
-<p><b>c) Technical connection data.</b> As with any online app, our service providers’ servers may process your IP address in short-lived technical logs to make the connection and keep it secure. We don’t use these logs for advertising or profiling.</p>
+<p><b>b) Rooms (Play Now and Play with Friends).</b> “Play Now” may put you in a room with other players looking for a game at that moment; empty places are filled with computer players. In “Play with Friends” you play only with people you share the room code with. When you create or join a room, the room code, your character, nickname, in-game position, moves and score are written in real time so the game can run, and are shown only to players in that room. Your entry is deleted when you leave; the whole room is deleted when the host leaves. Rooms left open by a lost connection are removed by the game’s automatic clean-up (rooms older than 6 hours).</p>
+<p><b>c) Leaderboards.</b> When you finish a round of Hide and Seek or Mushroom Hunt, your best round score is saved with your nickname (or your character’s name), a 3-digit tag and a random device code created once on this device. The device code only keeps the same device’s entries together; it is not linked to your identity, phone number or advertising ID. Everyone can see the nickname, tag and score on the leaderboards. Choose “Show me on leaderboards: No” in Settings to stop sending entries, and “Delete my leaderboard entries” to remove them.</p>
+<p><b>d) Technical connection data.</b> As with any online app, our service providers’ servers may process your IP address in short-lived technical logs to make the connection and keep it secure. We don’t use these logs for advertising or profiling.</p>
 
 <h2>5. Service providers and transfers</h2>
 <table><tr><th>Provider</th><th>Purpose</th><th>Location</th></tr>
@@ -37,7 +39,7 @@ th{background:#f4e3c6}a{color:#2f6fb5}nav{margin-bottom:18px;font-size:14px}.kut
 <p>Room data is processed to provide the multiplayer game you asked for (GDPR Art. 6(1)(b), KVKK Art. 5/2-c); technical logs and anonymous counts are processed on the basis of our legitimate interest in keeping the game secure, working and improving (GDPR Art. 6(1)(f), KVKK Art. 5/2-f).</p>
 
 <h2>7. Nicknames</h2>
-<p>A nickname is optional; if left empty, the character’s name is used. Names containing swear words, insults, phone numbers, email addresses or links are rejected automatically. Please don’t use your real full name. If you see an inappropriate name, email the room code and the name to info@mindsharp.co; we review reports within 48 hours.</p>
+<p>A nickname is optional; if left empty, the character’s name is used. Names containing swear words, insults, phone numbers, email addresses or links are rejected automatically. Your nickname is visible to everyone on the leaderboards; please don’t use your real full name. If you see an inappropriate name, email the name (and room code, if any) to info@mindsharp.co; we review reports within 48 hours.</p>
 
 <h2>8. Ads and tracking</h2>
 <p>The game contains no ad network, advertising SDK or analytics SDK, and does no tracking as defined by Apple. Occasionally, between rounds, short trailers of the same developer’s other games (MindSharp, Neriman’s Tea Time) may be shown. They use no information about you, and the button to the store sits behind a short question an adult can answer (parental gate).</p>
@@ -47,8 +49,9 @@ th{background:#f4e3c6}a{color:#2f6fb5}nav{margin-bottom:18px;font-size:14px}.kut
 
 <h2>10. Retention</h2>
 <table><tr><th>Data</th><th>Where</th><th>How long</th></tr>
-<tr><td>Settings, character, nickname</td><td>Device only</td><td>Until you delete it</td></tr>
+<tr><td>Settings, character, nickname, device code</td><td>Device only</td><td>Until you delete it</td></tr>
 <tr><td>Room data (character, nickname, position, score)</td><td>Firebase</td><td>Until the room closes; abandoned rooms are cleaned within hours</td></tr>
+<tr><td>Leaderboard entry (nickname, tag, device code, score)</td><td>Firebase</td><td>Daily board 7 days, weekly 8 weeks; all-time board keeps only the top 100</td></tr>
 <tr><td>Anonymous daily and total counts</td><td>Firebase</td><td>Indefinitely (cannot be linked to anyone)</td></tr>
 <tr><td>Technical connection logs</td><td>Providers’ servers</td><td>The provider’s short log period</td></tr></table>
 
