@@ -1,7 +1,7 @@
 {
   "name": "Sobe!",
   "short_name": "Sobe",
-  "description": "Sobe! Türk usulü saklambaç. Arkadaşlarınla aynı ormanda, kendi cihazından oyna.",
+  "description": "Sobe! Mantar avı ve Türk usulü saklambaç. Arkadaşlarınla aynı ormanda, kendi cihazından oyna.",
   "lang": "tr",
   "start_url": "./",
   "scope": "./",
