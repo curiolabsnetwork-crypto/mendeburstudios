@@ -1,0 +1,52 @@
+{
+ "surum": 1,
+ "aciklama": "Sobe! uzaktan ayarlar. hiz: karakter hız çarpanı (yazılmayan 1). nadirlik: 0 Yaygın,1 Orta,2 Nadir,3 Çok nadir,4 Efsanevi (puan, çıkma oranı). mantar: türün nadirlik seviyesi. turSure: saniye.",
+ "hiz": {
+  "Deniz": 1.25,
+  "Özgür": 1.25
+ },
+ "mantarAdet": 87,
+ "turSure": 120,
+ "nadirlik": [
+  {
+   "puan": 5,
+   "oran": 0.4
+  },
+  {
+   "puan": 15,
+   "oran": 0.33
+  },
+  {
+   "puan": 40,
+   "oran": 0.15
+  },
+  {
+   "puan": 100,
+   "oran": 0.08
+  },
+  {
+   "puan": 200,
+   "oran": 0.04
+  }
+ ],
+ "mantar": {
+  "kav": 0,
+  "sigirdili": 0,
+  "kanlica": 0,
+  "yumurta": 1,
+  "ayi": 2,
+  "kukurt": 1,
+  "semsiye": 1,
+  "kuzugobegi": 3,
+  "reishi": 2,
+  "civciv": 2,
+  "sezar": 4,
+  "sinek": 4,
+  "koygocuren": 2,
+  "aslan": 3,
+  "russula": 1,
+  "demet": 1,
+  "bal": 1,
+  "hindi": 1
+ }
+}
