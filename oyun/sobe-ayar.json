@@ -1,9 +1,9 @@
 {
- "surum": 5,
+ "surum": 6,
  "aciklama": "Sobe! uzaktan ayarlar. hiz: karakter hız çarpanı (yazılmayan 1). nadirlik: 0 Yaygın,1 Orta,2 Nadir,3 Çok nadir,4 Efsanevi (puan, çıkma oranı). mantar: türün nadirlik seviyesi. turSure: saniye.",
  "hiz": {
-  "Deniz": 2.0,
-  "Özgür": 1.25
+  "Deniz": 1.2,
+  "Özgür": 1.2
  },
  "mantarAdet": 87,
  "turSure": 120,
